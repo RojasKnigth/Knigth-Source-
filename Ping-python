@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# -*- conding: utf-8 -*-
+#RojasKnigth
+
+import subprocess
+###########
+import os #
+#---------#
+
+No_salida = open(os.devnull,"w")
+def ping(ip):
+	request = subprocess.call(
+		["ping","-c", "4", ip], stdout=No_salida, stderr=subprocess.STDOUT
+		)
+	if request == 0:
+		print "[+]El hosts esta respondiendo"
+	else:
+		print "[x]la maquina no esta respondiendo"
+print "Digita la IP (Digite 'salir' para salir del programa)"
+
+while True:
+	ip = raw_input("> ")
+	if ip == "salir":
+		print "[+] Programa Finalizado"
+		break
+	else:
+		ping(ip)
+
+
+
+
