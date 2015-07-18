@@ -1,0 +1,35 @@
+#!/usr/bin/python
+# -*- conding: utf-8 -*-
+#RojasKnigth
+#//////////////////
+import optparse   #
+import subprocess #
+import os         #
+#//////////////////
+
+No_salida = open(os.devnull,"w")
+
+def direccionIP(adress):
+	request = subprocess.call(
+		["ping", "-c", "1", adress], stdout=No_salida, stderr=subprocess.STDOUT
+		)
+	if request == 0:
+		print "[+]El hosts esta respondiendo"
+	else:
+		print "[x]la maquina no esta respondiendo"
+
+def main():
+	parser = optparse.OptionParser("./prog -P <Direccion IP>")
+	parser.add_option("-P", dest="Direccion_IP", type="string", help="Especifique la IP")
+	(options, args) = parser.parse_args()
+
+	adress = options.Direccion_IP
+	if adress == None:
+		parser.print_help()
+		exit(0)
+	else:
+		direccionIP(adress)
+
+
+if __name__ == '__main__':
+	main()
