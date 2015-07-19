@@ -1,0 +1,39 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#Danny Rojas Reyes
+#RojasKnigth
+
+#################
+import socket
+import optparse
+#################
+
+def Escaneo_de_puertos(Host,Port):
+	try:
+		request = socket.socket()
+		request.settimeout(1)
+		request.connect((Host, Port))
+		print "{} /tcp Abierto".format(Port)
+	except:
+		print "{} /tcp Cerrado".format(Port)
+	finally:
+		request.close()
+
+def main():
+	parser = optparse.OptionParser("./prog -H <Objetivo Host>")
+	parser.add_option("-H", dest="host_IP", type="string", help="Especifique el host")
+	(options, args) = parser.parse_args()
+
+	ip = options.host_IP
+
+	if ip:
+		ports = [21, 22, 80, 445, 8080]
+		for puerto in ports:
+			Escaneo_de_puertos(ip, puerto)
+	else:
+		parser.print_help()
+		exit(0)
+
+if __name__ == '__main__':
+	main()
+
